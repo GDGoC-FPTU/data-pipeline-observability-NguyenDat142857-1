@@ -319,3 +319,10 @@ class TestReadme:
             "README does not contain run instructions. "
             "Add a section explaining how to run your pipeline."
         )
+
+        # Check for student ID (warn but don't fail hard)
+        has_id = bool(re.search(r'AI20K-\d{4}', content))
+        assert has_id, (
+            "README does not contain your Student ID (69tiendat@gmail.com). "
+            "Replace '69tiendat@gmail.com with your actual student ID."
+        )
