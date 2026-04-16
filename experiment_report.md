@@ -1,72 +1,55 @@
 # Experiment Report: Data Quality Impact on AI Agent
 
-**Student ID:** 2A202600218
-**Name:** Nguyễn Tiến Đạt
-**Date:** 15/04/2026
+**Student ID:** 2A202600218  
+**Name:** Nguyễn Tiến Đạt  
+**Date:** 15/04/2026  
 
 ---
 
-## 1. Kết quả thí nghiệm
-
-Chạy `agent_simulation.py` với 2 bộ dữ liệu và ghi lại kết quả:
+## Experiment Results
 
 | Scenario                          | Agent Response                                                   | Accuracy (1-10) | Notes                                             |
 | --------------------------------- | ---------------------------------------------------------------- | --------------- | ------------------------------------------------- |
-| Clean Data (`processed_data.csv`) | Based on my data, the best choice is Laptop at $1200.            | 9/10            | Dữ liệu sạch, giá hợp lý, kết quả đáng tin cậy    |
-| Garbage Data (`garbage_data.csv`) | Based on my data, the best choice is Nuclear Reactor at $999999. | 2/10            | Dữ liệu bất thường (outlier), kết quả phi thực tế |
+| Clean Data (`processed_data.csv`) | Based on my data, the best choice is Laptop at $1200.            | 9/10            | Clean data leads to reliable results              |
+| Garbage Data (`garbage_data.csv`) | Based on my data, the best choice is Nuclear Reactor at $999999. | 2/10            | Noisy data leads to unrealistic results           |
 
 ---
 
-## 2. Phân tích & nhận xét
+## Analysis
 
-### Tại sao Agent trả lời sai khi dùng Garbage Data?
+When using garbage data, the quality of input data significantly decreases, which leads to incorrect decisions by the AI agent.
 
-Khi sử dụng Garbage Data, chất lượng dữ liệu đầu vào bị suy giảm nghiêm trọng, dẫn đến việc AI Agent đưa ra kết quả không chính xác. Một số vấn đề chính bao gồm:
+- **Outliers:** Extremely large values (e.g., Nuclear Reactor price) distort decision-making.
+- **Wrong data types:** Incorrect formats (string instead of numeric) can break calculations.
+- **Missing values:** Missing `price` or `category` reduces data reliability.
+- **Duplicate records:** Can bias the model toward certain values.
+- **Lack of validation:** Without proper filtering, bad data flows into the system.
 
-* **Outliers (giá trị ngoại lai):**
-  Ví dụ như sản phẩm *"Nuclear Reactor"* với giá $999999 là không thực tế trong ngữ cảnh dữ liệu. Agent không có khả năng tự hiểu đây là dữ liệu sai, nên vẫn sử dụng để đưa ra quyết định.
-
-* **Sai kiểu dữ liệu (Wrong data types):**
-  Nếu giá trị `price` bị chuyển thành string hoặc null, quá trình tính toán sẽ bị sai lệch hoặc không chính xác.
-
-* **Thiếu dữ liệu (Null values):**
-  Các record thiếu `category` hoặc `price` có thể làm mô hình hiểu sai phân phối dữ liệu.
-
-* **Duplicate IDs (trùng lặp dữ liệu):**
-  Khi dữ liệu bị lặp lại, một số giá trị có thể bị "overweight", làm bias kết quả.
-
-* **Thiếu bước validation mạnh:**
-  Nếu pipeline không lọc kỹ dữ liệu (ví dụ không loại outlier), Agent sẽ học từ dữ liệu sai.
-
-👉 Kết quả là Agent chọn sản phẩm đắt nhất (outlier) thay vì sản phẩm hợp lý.
+As a result, the agent selects unrealistic options instead of reasonable ones.
 
 ---
 
-## 3. Kết luận
+## Insights
 
-### **Quality Data > Quality Prompt?**
-
-👉 **Đồng ý.**
-
-Dữ liệu đầu vào đóng vai trò quan trọng hơn prompt trong nhiều trường hợp. Dù prompt có tốt đến đâu, nếu dữ liệu bị nhiễu, sai lệch hoặc chứa outliers, AI vẫn sẽ đưa ra kết quả sai.
-
-Trong thí nghiệm này:
-
-* Với **Clean Data** → Agent đưa ra lựa chọn hợp lý (Laptop).
-* Với **Garbage Data** → Agent bị đánh lừa bởi dữ liệu sai (Nuclear Reactor).
-
-👉 Điều này cho thấy:
-
-> **Garbage In → Garbage Out**
-
-Vì vậy, việc xây dựng một hệ thống ETL với bước **validation và data cleaning** là cực kỳ quan trọng để đảm bảo độ tin cậy của AI system.
+- Data quality is critical for reliable AI systems.
+- Poor quality data can lead to incorrect and misleading outputs.
+- Validation is essential in ETL pipelines to filter bad data.
+- Logging improves observability and helps detect issues early.
+- AI systems depend heavily on the quality of input data.
 
 ---
 
-## 4. Bonus Insight (Optional)
+## Conclusion
 
-* Data Observability giúp phát hiện sớm các vấn đề dữ liệu.
-* Validation là lớp bảo vệ đầu tiên của hệ thống AI.
-* AI không “hiểu” dữ liệu sai — nó chỉ “học” từ dữ liệu được cung cấp.
+**Quality Data > Quality Prompt**
 
----
+Even with a well-designed prompt, poor data quality will still produce bad results.
+
+- Clean Data → Accurate and meaningful output  
+- Garbage Data → Incorrect and misleading output  
+
+This demonstrates the principle:
+
+> Garbage In → Garbage Out
+
+Therefore, building a strong ETL pipeline with proper validation and data cleaning is essential for trustworthy AI systems.
