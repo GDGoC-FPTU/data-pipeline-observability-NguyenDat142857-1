@@ -62,7 +62,11 @@ def validate(data):
         else:
             error_count += 1
 
-    print(f"Validation complete. Valid: {len(valid_records)}, Errors: {error_count}")
+    # 🔥 FORMAT PHẢI RÕ RÀNG
+    print(f"Processed: {len(data)}")
+    print(f"Valid: {len(valid_records)}")
+    print(f"Dropped: {error_count}")
+
     return valid_records
 
 
